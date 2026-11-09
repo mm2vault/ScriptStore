@@ -14,7 +14,7 @@ function escapeHtml(v=""){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","
 function notice(message){const el=$("#notice");el.textContent=message;el.classList.remove("hidden");}
 function setUser(user){state.user=user;$("#loginBtn").classList.toggle("hidden",!!user);$("#accountBtn").classList.toggle("hidden",!user);if(user)$("#accountBtn").textContent=(user.email||"U").slice(0,1).toUpperCase();}
 async function loadScripts(){
- if(!supabase){state.scripts=demo;notice("Önizleme modu: Supabase bağlantısı için scriptstore/supabase-config.js dosyasını yapılandır ve SQL şemasını çalıştır.");render();return;}
+ if(!supabase){state.scripts=demo;notice("Önizleme modu: supabase-config.js dosyasına Supabase Project URL ve publishable key ekle, ardından SQL şemasını çalıştır.");render();return;}
  const {data,error}=await supabase.from("script_items").select("id,title,game_name,category,description,code_text,created_at,author_id,script_likes(count)").eq("status","published").order("created_at",{ascending:false}).limit(60);
  if(error){state.scripts=demo;notice("Veritabanı henüz hazır değil. SQL şemasını Supabase SQL Editor'de çalıştır.");console.error(error);}
  else state.scripts=(data||[]).map(s=>({...s,likes_count:s.script_likes?.[0]?.count||0,author_name:"Community Developer"}));
